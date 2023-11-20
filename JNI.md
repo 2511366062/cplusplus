@@ -67,4 +67,75 @@ JNIEXPORT void JNICALL Java_com_tinnove_mylibrary_MediaRecord_start
   + JNIEnv *指针：java世界的代表，通过它访问java世界代码
   + 初次调用会建立连接保存函数指针，这样会影响效率
 
-​	
+	## 2.动态注册
+
+### 1. 移植c++工程
+
++ 在模块的build.gradle下添加
+
+```
+externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.18.1'
+        }
+    }
+    
+    
+ //c++标准库
+ externalNativeBuild{
+            cmake{
+                cppFlags "-std=c++11"
+            }
+        }
+    }
+```
+
+
+
++ 赋值cpp目录
+
+### 2.cmake基础语法
+
+```cmake
+
+# 定义变量并赋值
+set(name lixiaokang) 
+
+# 打印编译日志
+message(${name})
+message(${CMAKE_CURRENT_LIST_FILE})
+message(${CMAKE_CURRENT_LIST_DIR})
+
+#条件语句
+if(TRUE)
+    message(name)
+endif()
+
+
+# 将自定.cpp文件加载为动态库
+add_library(
+        shit_lib #库名
+        SHARED   # SHARED动态库、STATIC静态库
+        Twss.cpp # 文件
+
+)
+
+
+# 查找库
+find_library( 
+        log-lib # 将查找到的库名给赋值给该变量
+        
+        log # 查找的库
+        
+        )
+        
+# 链接库        
+target_link_libraries( 
+        test_lib
+
+        shit_lib
+        
+        ${log-lib})
+```
+
